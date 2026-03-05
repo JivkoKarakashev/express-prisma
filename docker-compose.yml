@@ -1,0 +1,21 @@
+name : express-prisma-project
+services:
+# PostgreSQL Service
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+# Express API Service
+  express-api:
+    build: .
+    container_name: express_api
+    restart: always
+    depends_on:
+      postgres: # Ensure PostgreSQL starts before Express API
+        condition: service_healthy

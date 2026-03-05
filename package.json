@@ -1,0 +1,42 @@
+{
+  "name": "express-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development npx ts-node ./src/index.ts",
+    "build": "cross-env NODE_ENV=production npx tsc",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "clean": "rd /s /q dist",
+    "lint": "eslint .",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio",
+    "docker:dev": "docker-compose --env-file .env.development -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "docker:prod": "docker-compose --env-file .env.production -f docker-compose.yml -f docker-compose.prod.yml up --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/client": "^7.4.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.3",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.3",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.3",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-node": "^11.1.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^7.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
+  }
+}
