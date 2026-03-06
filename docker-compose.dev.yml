@@ -17,7 +17,8 @@ services:
       sh -c "npx prisma generate && npx prisma migrate dev && npm run start:dev"
     volumes:
       - .:/app # Mount project directory (local express-api) inside the container
-      - node_modules:/app/node_modules # Named volume instead of an anonymus one
+      # - node_modules:/app/node_modules # Named volume instead of an anonymus one
+      - /app/node_modules # Anonymus Volume
 
 volumes:
   node_modules:
