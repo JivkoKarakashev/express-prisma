@@ -5,20 +5,25 @@ services:
       - .env.development
     ports:
       - "5432:5432" # Expose PostgreSQL on port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 # Express API Service
   express-api:
+    build:
+      context: .
+      target: dev
     env_file:
       - .env.development
     ports:
       - "3000:3000" # Expose Express on port 3000
       - "5555:5555" # Expose Prisma Studio on port 5555
     command: >
-      sh -c "npx prisma generate && npx prisma migrate dev && npm run start:dev"
+      sh -c "npx prisma generate && npm run start:dev"
     volumes:
       - .:/app # Mount project directory (local express-api) inside the container
-      # - node_modules:/app/node_modules # Named volume instead of an anonymus one
-      - /app/node_modules # Anonymus Volume
+      - node_modules:/app/node_modules # Named volume instead of an anonymous one
 
 volumes:
   node_modules:
+  postgres_data:

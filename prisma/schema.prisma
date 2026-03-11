@@ -12,3 +12,105 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Category {
+  id                    Int                       @id   @default(autoincrement())
+  parent                Category?                 @relation("CategoryParent", fields:[parentId], references:[id])
+  parentId              Int?
+  name                  String                    @unique    @db.VarChar(50)
+  slug                  String                    @unique    @db.VarChar(55)
+  isActive              Boolean                   @default(false)
+  level                 Int                       @db.SmallInt   @default(0)
+
+  children              Category[]                @relation("CategoryParent")
+  products              Product[]                 @relation("CategoryProduct")
+
+  @@map("category")
+}
+
+model Product {
+  id                    Int                       @id   @default(autoincrement())
+  category              Category                  @relation("CategoryProduct", fields:[categoryId], references:[id], onDelete: Cascade)
+  categoryId            Int
+  name                  String                    @unique   @db.VarChar(50)
+  slug                  String                    @unique   @db.VarChar(55)
+  description           String
+  isDigital             Boolean                   @default(false)
+  isActive              Boolean                   @default(false)
+  createdAt             DateTime                  @db.Timestamptz   @default(now())
+  updatedAt             DateTime?                 @db.Timestamptz
+  price                 Decimal                   @db.Decimal(10, 2)
+
+  productPromotions     ProductPromotionEvent[]
+  stock                 StockManagement?
+  orderProducts         OrderProduct[]
+
+  @@map("product")
+}
+
+model PromotionEvent {
+  id                    Int                       @id   @default(autoincrement())
+  startDate             DateTime                  @db.Timestamptz
+  endDate               DateTime                  @db.Timestamptz
+  name                  String                    @unique    @db.VarChar(50)
+  priceReduction        Int
+
+  productPromotions     ProductPromotionEvent[]
+
+  @@map("promotion_event")
+}
+
+model ProductPromotionEvent {
+  id                    Int                       @id   @default(autoincrement())
+  product               Product                   @relation(fields:[productId], references:[id])
+  productId             Int
+  promotionEvent        PromotionEvent            @relation(fields:[promotionEventId], references:[id])
+  promotionEventId      Int
+
+  @@unique([productId, promotionEventId])
+  @@map("product_promotion_event")
+}
+
+model StockManagement {
+  id                    Int                       @id   @default(autoincrement())
+  product               Product                   @relation(fields:[productId], references:[id])
+  productId             Int                       @unique
+  quantity              Int                       @default(0)
+  lastCheckedAt         DateTime                  @db.Timestamptz
+
+  @@map("stock_management")
+}
+
+model User {
+  id                    Int                       @id   @default(autoincrement())
+  username              String                    @unique   @db.VarChar(50)
+  email                 String                    @unique   @db.VarChar(50)
+  password              String                    @db.VarChar(50)
+
+  orders                Order[]
+
+  @@map("user")
+}
+
+model Order {
+  id                    Int                       @id   @default(autoincrement())
+  user                  User                      @relation(fields:[userId], references:[id])
+  userId                Int
+  createdAt             DateTime                  @db.Timestamptz   @default(now())
+  updatedAt             DateTime?                 @db.Timestamptz
+
+  orderProducts         OrderProduct[]
+
+  @@map("order")
+}
+
+model OrderProduct {
+  id                    Int                       @id   @default(autoincrement())
+  order                 Order                     @relation(fields:[orderId], references:[id])
+  orderId               Int
+  product               Product                   @relation(fields:[productId], references:[id])
+  productId             Int
+  quantity              Int
+
+  @@map("order_product")
+}
