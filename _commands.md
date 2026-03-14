@@ -17,7 +17,7 @@
 `npx prisma generate`
 
 ### Start Prisma Studio (optional, for inspecting our database)
-`npx prisma studio`
+`npx prisma studio --browser none --port 5555`
 
 # Docker
 
