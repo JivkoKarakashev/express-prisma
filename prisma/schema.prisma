@@ -9,6 +9,16 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
+generator zod {
+  provider      = "prisma-zod-generator"
+  config        = "./zod-generator.config.json"
+  output        = "../src/generated/zod"
+  relationModel = true
+  modelCase     = "PascalCase" 
+  modelSuffix   = "Schema"
+  useDecimalJs  = true
+}
+
 datasource db {
   provider = "postgresql"
 }

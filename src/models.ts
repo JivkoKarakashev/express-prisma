@@ -11,17 +11,6 @@ const models = {
   productPromotionEvent: prisma.productPromotionEvent
 };
 
-type ModelName = keyof typeof models;
-
-const isValidModelName = (name: string | string[]): name is ModelName => {
-  if (typeof name === 'object') {
-    return name.every(n => n in models);
-  }
-  return name in models;
-};
-
 export {
-  type ModelName,
-  models,
-  isValidModelName
+  models
 }

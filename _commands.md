@@ -32,8 +32,11 @@
 
 # Postgres
 
-### Log into the Postgres container
+### Log into the Linux shell container
 `docker exec -it postgres_db /bin/bash`
+
+### Log into the Postgres container
+`psql -U POSTGRES_USER -d POSTGRES_DB`
 
 ### Inspect Tables in the Database
 `\dt`
