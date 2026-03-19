@@ -19,7 +19,7 @@ services:
       - "3000:3000" # Expose Express on port 3000
       - "5555:5555" # Expose Prisma Studio on port 5555
     command: >
-      sh -c "npm install && npx prisma generate && npm run start:dev"
+      sh -c "npm install && npx prisma migrate deploy && npx prisma generate && npm run start:dev"
     volumes:
       - .:/app # Mount project directory (local express-api) inside the container
       - /app/node_modules

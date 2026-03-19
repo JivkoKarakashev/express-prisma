@@ -26,5 +26,5 @@ const userValidator = (req: Request, res: Response, next: NextFunction) => {
 export default userValidator;
 
 export {
-  CreateUserSchema
+  type CreateUserSchema
 }

@@ -9,14 +9,14 @@ const getAllUsers = async (_req: Request, res: Response, next: NextFunction): Pr
     const response = result.map(usr => ({ id: usr.id, username: usr.username, email: usr.email }));
     res.status(200).json(response);
   } catch (err) {
-    res.status(400).json({ error: 'An error occurred while fetch all users!' })
+    res.status(400).json({ error: 'An error occurred while fetching all users!' });
     next(err)
   }
 };
 
-const getUserById = async (req: Request, res: Response, next: NextFunction) => {
-  const { uid } = req.params;
+const getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
+    const { uid } = req.params;
     if (!uid) {
       throw new Error('Missing uid param!');
     }
@@ -27,13 +27,13 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
     const { id, username, email } = result;
     res.status(200).json({ id, username, email });
   } catch (err) {
-    const error = err instanceof Error ? err.message : 'An error occurred while fetch user by Id!'
+    const error = err instanceof Error ? err.message : 'An error occurred while fetching an user by Id!';
     res.status(400).json({ error });
     next(err);
   }
 };
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
+const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const data: Prisma.UserCreateInput = req.body;
     console.log(data);
@@ -41,27 +41,29 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     // const { id, username, email } = await models.user.create({ data });
     // res.status(201).json({ id, username, email });
   } catch (err) {
-    res.status(500).json({ error: 'An error occurred while create new user!' });
+    res.status(500).json({ error: 'An error occurred while creating an user!' });
     next(err);
   }
 };
 
-const updateUserById = async (req: Request, res: Response, next: NextFunction) => {
+const updateUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { uid } = req.params;
     if (!uid) {
       throw new Error('Missing uid param!');
     }
     const data: Prisma.UserUpdateInput = req.body;
-    const { id, username, email } = await models.user.update({ data, where: { id: Number(uid) } });
-    res.status(200).json({ id, username, email });
+    console.log(data);
+    res.status(201).json(data);
+    // const { id, username, email } = await models.user.update({ data, where: { id: Number(uid) } });
+    // res.status(200).json({ id, username, email });
   } catch (err) {
     res.status(400).json({ error: 'An error occurred while updating the user!' });
     next(err);
   }
 };
 
-const deleteUserById = async (req: Request, res: Response, next: NextFunction) => {
+const deleteUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { uid } = req.params;
   try {
     if (!uid) {
