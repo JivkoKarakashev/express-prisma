@@ -71,7 +71,7 @@ const updateOrderById = async (req: Request, res: Response, next: NextFunction) 
     // const result = await models.order.update({ data, where: { id: Number(uid) } });
     // res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ error: 'An error occurred while updating the user!' });
+    res.status(400).json({ error: 'An error occurred while updating an order!' });
     next(err);
   }
 };
@@ -85,7 +85,7 @@ const deleteOrderById = async (req: Request, res: Response, next: NextFunction) 
     await models.order.delete({ where: { id: Number(uid) } });
     res.status(204).json({});
   } catch (err) {
-    res.status(400).json({ error: 'An error occurred while deleting the order!' });
+    res.status(400).json({ error: 'An error occurred while deleting an order!' });
     next(err);
   }
 };
