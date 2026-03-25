@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import z from "zod";
+import { z } from "zod";
 
 import { CategorySchema } from "../generated/zod/schemas";
 import { models } from "../models";
