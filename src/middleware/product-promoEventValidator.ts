@@ -41,9 +41,9 @@ const updateProductPromoEventSchema = baseProductPromoEventSchema
 const productPromoEventValidator = async (req: Request, res: Response, next: NextFunction) => {
   const { uid } = req.params;
   const data = uid ? { ...req.body, id: Number(uid) } : req.body;
-  const shcema = uid ? updateProductPromoEventSchema : createProductPromoEventSchema;
+  const schema = uid ? updateProductPromoEventSchema : createProductPromoEventSchema;
 
-  const { success, error } = await shcema.safeParseAsync(data);
+  const { success, error } = await schema.safeParseAsync(data);
   if (!success) {
     return res.status(400).json(z.treeifyError(error));
   }
