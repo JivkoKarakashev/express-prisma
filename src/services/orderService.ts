@@ -46,6 +46,30 @@ const getOrdersByUserId = async (req: Request, res: Response, next: NextFunction
   }
 };
 
+const getProductByOrderId = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { uid } = req.params;
+    if (!uid) {
+      throw new Error('Missing uid param!');
+    }
+    const result = await models.order.findUnique({
+      where: { id: Number(uid) },
+      include: {
+        orderProducts: {
+          include: {
+            product: true
+          }
+        }
+      }
+    });
+    res.status(200).json({ orderId: Number(uid), products: result });
+  } catch (err) {
+    const error = err instanceof Error ? err.message : 'An error occurred while fetching products for a specific order!';
+    res.status(400).json({ error });
+    next(err)
+  }
+};
+
 const createOrder = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const data: Prisma.OrderCreateInput = req.body;
@@ -94,6 +118,7 @@ export {
   getAllOrders,
   getOrderById,
   getOrdersByUserId,
+  getProductByOrderId,
   createOrder,
   updateOrderById,
   deleteOrderById
